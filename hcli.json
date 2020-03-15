@@ -1,0 +1,24 @@
+{
+    "name": "Hcli",
+    "resources": [
+
+    {
+                "module": "Rh",
+                "resource": "Funcionario",
+                "resource-plural": "Funcionarios"
+            },
+
+    {
+                "module": "Sup",
+                "resource": "Nota",
+                "resource-plural": "NotasFiscais"
+            },
+
+    {
+                "module": "Man",
+                "resource": "Objeto",
+                "resource-plural": "Objetos"
+            }
+
+    ]
+}
