@@ -88,27 +88,49 @@ class PontoService extends AbstractService
        
        $status = self::AUSENTE;
        $hora = null;
-       if($ponto->getHrEntrada()) {
-           $hora = $ponto->getHrEntrada();
-           $status = self::TRABALHANDO;
-       }
        
-       if($ponto->getHrEntradaAlmoco()) {
-           $hora = $ponto->getHrEntradaAlmoco();
-           $status = self::ALMOCANDO;
-       }
-       
-       if($ponto->getHrSaidaAlmoco()) {
-           $hora = $ponto->getHrSaidaAlmoco();
-          $status = self::TRABALHANDO;
-       }
-       
-       if($ponto->getHrSaida()) {
-           $hora = $ponto->getHrSaida();
-           $status = self::AUSENTE;
-       }
+       if($ponto) {
+            if($ponto->getHrEntrada()) {
+                $hora = $ponto->getHrEntrada();
+                $status = self::TRABALHANDO;
+            }
+            
+            if($ponto->getHrEntradaAlmoco()) {
+                $hora = $ponto->getHrEntradaAlmoco();
+                $status = self::ALMOCANDO;
+            }
+            
+            if($ponto->getHrSaidaAlmoco()) {
+                $hora = $ponto->getHrSaidaAlmoco();
+                $status = self::TRABALHANDO;
+            }
+            
+            if($ponto->getHrSaida()) {
+                $hora = $ponto->getHrSaida();
+                $status = self::AUSENTE;
+            }
+        }
 
        return ['hora' => $hora, 'status' => $status];
+    }
+
+    /**
+    *
+    * @param type $id
+    * @return type
+    */
+    public function delete($id)
+    {
+        $entity = $this->em->getReference($this->entity, (int) $id);
+
+        $idFunc = $entity->getRhFuncionario()->getId();
+
+        $this->em->remove($entity);
+        $this->em->flush();
+
+        $this->updateFuncInfo($idFunc);
+
+        return compact('id');
     }
     
     private function updateFuncInfo($idFunc){
