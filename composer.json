@@ -1,6 +1,6 @@
 {
-    "name": "skeleton-application",
-    "description": "Skeleton Application",
+    "name": "florclock-application",
+    "description": "florclock Application",
     "type": "project",
     "license": "BSD-3-Clause",
     "keywords": [
