@@ -9,6 +9,19 @@ return [
     'router' => [
         'routes' => [
 
+            'base-dia-router' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/base/dias[/:id]',
+                    'defaults' => [
+                        'controller' => \Base\DiasController::class
+                    ],
+                    'constraints' => [
+                        'id' => '[0-9]+'
+                    ],
+                ],
+            ],
+            
         ],
     ],
     'controllers' => [

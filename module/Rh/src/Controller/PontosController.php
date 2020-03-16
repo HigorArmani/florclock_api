@@ -17,4 +17,33 @@ class PontosController extends AbstractController
     {
         parent::__construct($em, $apiService, $service);
     }
+
+    /**
+     * Create a new resource
+     *
+     * @param  mixed $data
+     * @return mixed
+     */
+    public function create($data)
+    {
+        $result = $this->service->insert($data);
+
+        /**
+         * O Resultado em array significa inserção de multiplos valores
+         */
+        if (is_array($result)) {
+
+            $value = [];
+            foreach ($result as $key => $r) {
+                $value["in"] = implode(',', array_filter($result["id"]));
+            }
+
+            $this->getRequest()->getQuery()->set($key, $value);
+            $response = $this->getList();
+        } else {
+            $response = $this->get($result->getId());
+        }
+
+        return $response;
+    }
 }

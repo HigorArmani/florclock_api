@@ -24,9 +24,8 @@ class Module implements ConfigProviderInterface, ServiceProviderInterface, Contr
     {
         return [
             'factories' => [
-
                 ApiService::class => Factory\Service\ApiServiceFactory::class,      
-                
+                DiaService::class => Factory\Service\DiaServiceFactory::class,
             ]
         ];
     }
@@ -35,7 +34,7 @@ class Module implements ConfigProviderInterface, ServiceProviderInterface, Contr
     {
         return [
             'factories' => [
-
+                DiasController::class => Factory\Controller\DiasControllerFactory::class,
             ]
         ];
     }

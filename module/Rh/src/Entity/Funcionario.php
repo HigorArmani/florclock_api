@@ -26,7 +26,7 @@ class Funcionario
     private $id;
 
     /**
-     * @JMS\Groups({"RhFuncionario"})
+     * @JMS\Groups({"RhFuncionario", "RhPonto"})
      *
      * @var string
      *
@@ -46,10 +46,36 @@ class Funcionario
     /**
      * @JMS\Groups({"RhFuncionario"})
      *
+     * @var integer
+     *
+     * @ORM\Column(name="hr_saldo", type="integer", length=30, nullable=true)
+     */
+    private $hrSaldo;
+    
+    /**
+     * @JMS\Groups({"RhFuncionario"})
+     *
+     * @var string
+     *
+     * @ORM\Column(name="hr_ultima", type="string", length=30, nullable=true)
+     */
+    private $hrUltima;
+
+    /**
+     * @JMS\Groups({"RhFuncionario"})
+     *
      * @ORM\ManyToOne(targetEntity="Rh\Entity\Escala", inversedBy="rhFuncionario")
      * @ORM\JoinColumn(name="id_rh_escala", referencedColumnName="id_rh_escala")
      */
     private $rhEscala;
+    
+    /**
+     * @JMS\Groups({"RhFuncionario"})
+     *
+     * @ORM\ManyToOne(targetEntity="Rh\Entity\FuncionarioStatus", inversedBy="rhFuncionario")
+     * @ORM\JoinColumn(name="id_rh_funcionario_status", referencedColumnName="id_rh_funcionario_status")
+     */
+    private $rhFuncionarioStatus;
 
     public function __construct(array $options = array())
     {
@@ -67,15 +93,30 @@ class Funcionario
         return $this->nome;
     }
 
+    public function getFoto()
+    {
+        return $this->foto;
+    }
+
+    public function getHrSaldo()
+    {
+        return $this->hrSaldo;
+    }
+
+    public function getRhEscala()
+    {
+        return $this->rhEscala;
+    }
+
+    public function getRhFuncionarioStatus()
+    {
+        return $this->rhFuncionarioStatus;
+    }
+
     public function setNome($nome)
     {
         $this->nome = $nome;
         return $this;
-    }
-
-    public function getFoto()
-    {
-        return $this->foto;
     }
 
     public function setFoto($foto)
@@ -84,17 +125,35 @@ class Funcionario
         return $this;
     }
 
-    public function getEscala()
+    public function setHrSaldo($hrSaldo)
     {
-        return $this->escala;
-    }
-
-    public function setEscala($escala)
-    {
-        $this->escala = $escala;
+        $this->hrSaldo = $hrSaldo;
         return $this;
     }
-    
+
+    public function setRhEscala($rhEscala)
+    {
+        $this->rhEscala = $rhEscala;
+        return $this;
+    }
+
+    public function setRhFuncionarioStatus($rhFuncionarioStatus)
+    {
+        $this->rhFuncionarioStatus = $rhFuncionarioStatus;
+        return $this;
+    }
+
+    public function getHrUltima()
+    {
+        return $this->hrUltima;
+    }
+
+    public function setHrUltima($hrUltima)
+    {
+        $this->hrUltima = $hrUltima;
+        return $this;
+    }
+
     public function toArray()
     {
         return (new ClassMethods())->extract($this);

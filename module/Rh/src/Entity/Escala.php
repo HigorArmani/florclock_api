@@ -5,7 +5,6 @@ namespace Rh\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Zend\Hydrator\ClassMethods;
 use JMS\Serializer\Annotation as JMS;
-
 /**
  * rh_escala
  *
@@ -26,13 +25,20 @@ class Escala
     private $id;
 
     /**
-     * @JMS\Groups({"RhEscala", "RhFuncionario"})
+     * @JMS\Groups({"RhEscala", "RhFuncionario", "RhHorario"})
      *
      * @var string
      *
      * @ORM\Column(name="nome", type="string", length=30, nullable=true)
      */
     private $nome;
+
+    /**
+     * @JMS\Groups({"RhEscala"})
+     *
+     * @ORM\OneToMany(targetEntity="Rh\Entity\Horario", mappedBy="rhEscala")
+     */
+    private $rhHorarios;
 
     public function __construct(array $options = array())
     {
@@ -53,6 +59,17 @@ class Escala
     public function setNome($nome)
     {
         $this->nome = $nome;
+        return $this;
+    }
+    
+    function getRhHorarios()
+    {
+        return $this->rhHorarios;
+    }
+
+    function setRhHorarios($rhHorarios)
+    {
+        $this->rhHorarios = $rhHorarios;
         return $this;
     }
     

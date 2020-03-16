@@ -61,6 +61,23 @@ class Ponto
      */
     private $hrSaidaAlmoco;
 
+        /**
+     * @JMS\Groups({"RhPonto"})
+     *
+     * @var string
+     *
+     * @ORM\Column(name="data", type="string", length=30, nullable=true)
+     */
+    private $data;
+
+    /**
+     * @JMS\Groups({"RhPonto"})
+     *
+     * @ORM\ManyToOne(targetEntity="Rh\Entity\Funcionario", inversedBy="rhPonto")
+     * @ORM\JoinColumn(name="id_rh_funcionario", referencedColumnName="id_rh_funcionario")
+     */
+    private $rhFuncionario;
+
     public function __construct(array $options = array())
     {
         $hydrator = new ClassMethods;
@@ -115,7 +132,29 @@ class Ponto
         $this->hrSaidaAlmoco = $hrSaidaAlmoco;
         return $this;
     }
-    
+
+    public function setData($data)
+    {
+        $this->data = date('Y-m-d H:i', strtotime(str_replace("/", "-", $data)));
+        return $this;
+    }
+
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    public function getRhFuncionario()
+    {
+        return $this->rhFuncionario;
+    }
+
+    public function setRhFuncionario($rhFuncionario)
+    {
+        $this->rhFuncionario = $rhFuncionario;
+        return $this;
+    }
+
     public function toArray()
     {
         return (new ClassMethods())->extract($this);

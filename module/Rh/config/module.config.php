@@ -48,6 +48,19 @@ return [
                 ],
             ],
 
+            'rh-escala-router' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/rh/escalas[/:id]',
+                    'defaults' => [
+                        'controller' => \Rh\EscalasController::class
+                    ],
+                    'constraints' => [
+                        'id' => '[0-9]+'
+                    ],
+                ],
+            ],
+
         ],
     ],
     'controllers' => [

@@ -27,6 +27,7 @@ class Module implements ConfigProviderInterface, ServiceProviderInterface, Contr
                 FuncionarioService::class => Factory\Service\FuncionarioServiceFactory::class,
                 PontoService::class => Factory\Service\PontoServiceFactory::class,
                 HorarioService::class => Factory\Service\HorarioServiceFactory::class,
+                EscalaService::class => Factory\Service\EscalaServiceFactory::class,
             ]
         ];
     }
@@ -38,6 +39,7 @@ class Module implements ConfigProviderInterface, ServiceProviderInterface, Contr
                 FuncionariosController::class => Factory\Controller\FuncionariosControllerFactory::class,
                 PontosController::class => Factory\Controller\PontosControllerFactory::class,
                 HorariosController::class => Factory\Controller\HorariosControllerFactory::class,
+                EscalasController::class => Factory\Controller\EscalasControllerFactory::class,
             ]
         ];
     }

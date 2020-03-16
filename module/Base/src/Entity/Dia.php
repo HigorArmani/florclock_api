@@ -1,32 +1,32 @@
 <?php
 
-namespace Rh\Entity;
+namespace Base\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Zend\Hydrator\ClassMethods;
 use JMS\Serializer\Annotation as JMS;
 
 /**
- * rh_funcionario_status
+ * base_dia
  *
- * @ORM\Table(name="rh_funcionario_status")
+ * @ORM\Table(name="base_dia")
  * @ORM\Entity
  */
-class FuncionarioStatus
+class Dia
 {
     /**
-     * @JMS\Groups({"RhFuncionario"})
+     * @JMS\Groups({"BaseDia", "RhEscala"})
      *
      * @var integer
      *
-     * @ORM\Column(name="id_rh_funcionario_status", type="integer", nullable=false)
+     * @ORM\Column(name="id_base_dia", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @JMS\Groups({"RhFuncionario"})
+     * @JMS\Groups({"BaseDia", "RhFuncionario", "RhHorario", "RhEscala"})
      *
      * @var string
      *
@@ -45,17 +45,17 @@ class FuncionarioStatus
         return $this->id;
     }
 
-    function getNome()
+    public function getNome()
     {
         return $this->nome;
     }
 
-    function setNome($nome)
+    public function setNome($nome)
     {
         $this->nome = $nome;
         return $this;
     }
-
+    
     public function toArray()
     {
         return (new ClassMethods())->extract($this);

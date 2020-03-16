@@ -45,8 +45,12 @@ abstract class AbstractController extends AbstractRestfulController
 
         $data = $this->apiService->getList($this->getRequest(), $this->entity)->getResult();
 
+        if (isset($data[1])) {
+            return $this->response($this->jmsSerializer($data));
+        }
+
         if (isset($data[0])) {
-            return $this->response($this->jmsSerializer($data[0]));
+            return $this->response($this->jmsSerializer([$data[0]]));
         } else {
             return new JsonModel([]);
         }
@@ -77,7 +81,13 @@ abstract class AbstractController extends AbstractRestfulController
          * O Resultado em array significa inserção de multiplos valores
          */
         if (is_array($result)) {
-            $this->getRequest()->getQuery()->set('id', ['in' => $result['id']]);
+
+            $value = [];
+            foreach ($result as $key => $r) {
+                $value["in"] = implode(',', array_filter($result["id"]));
+            }
+
+            $this->getRequest()->getQuery()->set($key, $value);
             $response = $this->getList();
         } else {
             $response = $this->get($result->getId());
@@ -103,6 +113,28 @@ abstract class AbstractController extends AbstractRestfulController
     }
 
     /**
+     * Replace an entire resource collection
+     *
+     * Not marked as abstract, as that would introduce a BC break
+     * (introduced in 2.1.0); instead, raises an exception if not implemented.
+     *
+     * @param  mixed $data
+     * @return mixed
+     */
+    public function replaceList($data)
+    {
+        $result = $this->service->replaceList($data);
+
+        $value  = [];
+        foreach ($result as $key => $r) {
+            $value["in"] = implode(',', array_filter($result["id"]));
+        }
+
+        $this->getRequest()->getQuery()->set($key, $value);
+        return $this->getList();
+    }
+
+    /**
      * Update an existing resource
      *
      * @param  mixed $id
@@ -111,8 +143,8 @@ abstract class AbstractController extends AbstractRestfulController
      */
     public function patchList($data)
     {
-        $result = $this->service->patchList($data);
-        return new JsonModel($result);
+        //  $result = $this->service->patchList($data);
+        //  return new JsonModel($result);
     }
 
     /**
@@ -123,7 +155,7 @@ abstract class AbstractController extends AbstractRestfulController
      */
     public function delete($id)
     {
-        // if para o formato na url = (id=1,2,3,4)
+        // se true is delete list (id=1,2,3,4)
         if (strpos($id, ',')) {
             $result = $this->service->deleteList($id);
         } else {
@@ -133,7 +165,6 @@ abstract class AbstractController extends AbstractRestfulController
         return new JsonModel($result);
     }
 
-    // Serialização dos dados para Json
     protected function jmsSerializer($data)
     {
         $serializer = SerializerBuilder::create();
@@ -146,13 +177,11 @@ abstract class AbstractController extends AbstractRestfulController
             $context->setGroups($this->groups);
         }
 
-        $jsonContent = $serializer->build()->serialize($data, 'json',
-            $context->enableMaxDepthChecks());
+        $jsonContent = $serializer->build()->serialize($data, 'json', $context->enableMaxDepthChecks());
 
         return $jsonContent;
     }
 
-    // Configuração de resposta ao client
     protected function response($data)
     {
         $response = $this->getResponse();

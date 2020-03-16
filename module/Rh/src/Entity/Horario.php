@@ -15,7 +15,7 @@ use JMS\Serializer\Annotation as JMS;
 class Horario
 {
     /**
-     * @JMS\Groups({"RhHorario"})
+     * @JMS\Groups({"RhHorario", "RhEscala"})
      *
      * @var integer
      *
@@ -26,7 +26,7 @@ class Horario
     private $id;
 
     /**
-     * @JMS\Groups({"RhHorario"})
+     * @JMS\Groups({"RhHorario", "RhEscala"})
      *
      * @var string
      *
@@ -35,13 +35,29 @@ class Horario
     private $hrEntrada;
 
         /**
-     * @JMS\Groups({"RhHorario"})
+     * @JMS\Groups({"RhHorario", "RhEscala"})
      *
      * @var string
      *
      * @ORM\Column(name="hr_saida", type="string", length=30, nullable=true)
      */
     private $hrSaida;
+
+        /**
+     * @JMS\Groups({"RhHorario", "RhEscala"})
+     *
+     * @ORM\ManyToOne(targetEntity="Base\Entity\Dia", inversedBy="rhHorario")
+     * @ORM\JoinColumn(name="id_base_dia", referencedColumnName="id_base_dia")
+     */
+    private $baseDia;
+
+    /**
+     * @JMS\Groups({"RhHorario", "RhEscala"})
+     *
+     * @ORM\ManyToOne(targetEntity="Rh\Entity\Escala", inversedBy="rhHorario")
+     * @ORM\JoinColumn(name="id_rh_escala", referencedColumnName="id_rh_escala")
+     */
+    private $rhEscala;
 
     public function __construct(array $options = array())
     {
@@ -76,6 +92,28 @@ class Horario
         return $this;
     }
     
+    public function getRhEscala()
+    {
+        return $this->rhEscala;
+    }
+
+    public function setRhEscala($rhEscala)
+    {
+        $this->rhEscala = $rhEscala;
+        return $this;
+    }
+
+    public function getBaseDia()
+    {
+        return $this->baseDia;
+    }
+
+    public function setBaseDia($baseDia)
+    {
+        $this->baseDia = $baseDia;
+        return $this;
+    }
+
     public function toArray()
     {
         return (new ClassMethods())->extract($this);
